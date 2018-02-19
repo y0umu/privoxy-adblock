@@ -36,7 +36,7 @@
 ######################################################################
 
 # array of URL for AdblockPlus lists
-URLS=("https://easylist-downloads.adblockplus.org/easylistchina.txt")
+URLS=("https://easylist-downloads.adblockplus.org/easylistchina.txt" "https://easylist-downloads.adblockplus.org/easylist.txt")
 # privoxy config dir (default: /etc/privoxy/)
 CONFDIR=/etc/privoxy
 # directory for temporary files
@@ -90,7 +90,7 @@ function main()
 	
 		# download list
 		debug "Downloading ${url} ..." 0
-		wget -t 3 --no-check-certificate -O ${file} ${url} >${TMPDIR}/wget-${url//\//#}.log 2>&1
+		wget -t 3 -O ${file} ${url} >${TMPDIR}/wget-${url//\//#}.log 2>&1
 		debug "$(cat ${TMPDIR}/wget-${url//\//#}.log)" 2
 		debug ".. downloading done." 0
 		[ "$(grep -E '^\[Adblock.*\]$' ${file})" == "" ] && echo "The list recieved from ${url} isn't an AdblockPlus list. Skipped" && continue

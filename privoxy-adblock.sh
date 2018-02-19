@@ -93,7 +93,7 @@ function doconvert() {
     [[ -f "${filterfile}" ]] && rm "${filterfile}"
 
     echo "downloading ${url} ..."
-    wget -t 3 --no-check-certificate -O ${file} "${url}" >${tempdir}/wget-${url//\//#}.log 2>&1
+    wget -t 3 -O ${file} "${url}" >${tempdir}/wget-${url//\//#}.log 2>&1
 
     [ "$(grep -E '^.*\[Adblock.*\].*$' ${file})" == "" ] && echo "The list recieved from ${url} isn't an AdblockPlus list. Skipped" && continue
 
