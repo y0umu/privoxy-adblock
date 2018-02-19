@@ -1,5 +1,9 @@
 privoxy-adblock
 ===============
+This repo is forked from https://github.com/skroll/privoxy-adblock/, the
+original commit was https://github.com/skroll/privoxy-adblock/commit/edd7c803e6afad2c8a00d930ff189159826851ad
+
+The original readme starts below.
 
 A bash script for OS X that converts adblock lists to privoxy's format.
 
