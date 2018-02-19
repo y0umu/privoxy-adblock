@@ -4,11 +4,15 @@
 #
 #                  Author: Andrwe Lord Weber
 #                  Mail: lord-weber-andrwe<at>renona-studios<dot>org
-#                  Version: 0.2
+#                  Version: 0.2.1
 #                  URL: http://andrwe.dyndns.org/doku.php/blog/scripting/bash/privoxy-blocklist
 #
 ######################################################################
 # modified by y0umu (https://www.github.com/y0umu)
+# 1. removed the root-enforcing statement; this script can now run without
+#    root privillege if you do not have to installed the built filters
+#    right into privoxy's config directory
+# 2. added an -d option to specify the output directory
 ##################
 #
 #                  Summary: 
@@ -32,7 +36,7 @@
 ######################################################################
 
 # array of URL for AdblockPlus lists
-URLS=("https://easylist-downloads.adblockplus.org/easylistchina.txt" "http://adblockplus.mozdev.org/easylist/easylist.txt")
+URLS=("https://easylist-downloads.adblockplus.org/easylistchina.txt")
 # privoxy config dir (default: /etc/privoxy/)
 CONFDIR=/etc/privoxy
 # directory for temporary files
@@ -52,13 +56,14 @@ function usage()
 	echo "Options:"
 	echo "      -h:    Show this help."
 	echo "      -q:    Don't give any output."
+	echo "      -d <config_dir>: Specify the privoxy config directory. By default it is /etc/privoxy"
 	echo "      -v 1:  Enable verbosity 1. Show a little bit more output."
 	echo "      -v 2:  Enable verbosity 2. Show a lot more output."
 	echo "      -v 3:  Enable verbosity 3. Show all possible output and don't delete temporary files.(For debugging only!!)"
 	echo "      -r:    Remove all lists build by this script."
 }
 
-[ ${UID} -ne 0 ] && echo -e "Root privileges needed. Exit.\n\n" && usage && exit 1
+[ ${UID} -ne 0 ] && echo -e "Root privileges needed if you need to install to /etc/privoxy.\n\n"
 
 # check whether an instance is already running
 [ -e ${TMPDIR}/${TMPNAME}.lock ] && echo "An Instance of ${TMPNAME} is already running. Exit" && exit
@@ -149,12 +154,15 @@ touch ${TMPDIR}/${TMPNAME}.lock
 [ ${DBG} -le 2 ] && trap "rm -fr ${TMPDIR};exit" INT TERM EXIT
 
 # loop for options
-while getopts ":hrqv:" opt
+while getopts ":hrqd:v:" opt
 do
 	case "${opt}" in 
 		"h")
 			usage
 			exit 0
+			;;
+		"d")
+			CONFDIR="${OPTARG}"
 			;;
 		"v")
 			DBG="${OPTARG}"

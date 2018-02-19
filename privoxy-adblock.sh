@@ -2,7 +2,7 @@
 
 sedcmd=${SEDCMD:-sed}
 defaultprivoxydir="/usr/local/etc/privoxy"
-defaulturls=("https://easylist-downloads.adblockplus.org/easylist.txt")
+defaulturls=("https://easylist-downloads.adblockplus.org/easylist.txt" "https://easylist-downloads.adblockplus.org/easylistchina.txt")
 
 #===  FUNCTION  ================================================================
 #          NAME:  cleanup
